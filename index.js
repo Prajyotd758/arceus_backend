@@ -8,11 +8,10 @@ import router from "./routes/routes.js";
 const app = express();
 
 export const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "Network",
-  password: "1234",
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 async function testDB() {
