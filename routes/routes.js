@@ -1,7 +1,11 @@
 import { Router } from "express";
 const router = Router();
 
-import { RegisterUser, LoginUser } from "../controller/users/users.js";
+import {
+  RegisterUser,
+  LoginUser,
+  AddMember,
+} from "../controller/users/users.js";
 import {
   AllStockData,
   AddStock,
@@ -26,6 +30,7 @@ router.get("/orders", GetAllTransactions);
 
 router.post("/stock-data", AllStockData);
 router.post("/add-buisness", AddBuisness);
+router.post("/add-member", AddMember);
 router.post("/stock", AddStock);
 router.post("/save-user", LoginUser);
 router.post("/register-user", RegisterUser);
