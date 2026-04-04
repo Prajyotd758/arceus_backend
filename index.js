@@ -14,14 +14,22 @@ export const pool = new Pool({
   },
 });
 
-async function testDB() {
-  try {
-    const res = await pool.query("SELECT NOW()");
-    console.log("DB Connected");
-  } catch (err) {
-    console.error("DB Connection Failed", err);
-  }
-}
+// export const pool = new Pool({
+//   user: 'postgres',
+//   host: 'localhost',
+//   database: 'network',
+//   password: '1234',
+//   port: 5432,
+// });
+
+// async function testDB() {
+//   try {
+//     const res = await pool.query("SELECT NOW()");
+//     console.log("DB Connected");
+//   } catch (err) {
+//     console.error("DB Connection Failed", err);
+//   }
+// }
 
 // testDB();
 

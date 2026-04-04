@@ -70,8 +70,6 @@ export async function AllOrganizations(req, res) {
       [userId]
     );
 
-    console.log("result : ", result);
-
     return res.status(200).json({
       message: "Organizations fetched successfully",
       data: result.rows,

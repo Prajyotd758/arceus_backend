@@ -27,7 +27,7 @@ export async function AddStock(req, res) {
         if (existing.rows.length > 0) {
           const updated = await client.query(
             `UPDATE products
-             SET item_name = $1,
+             SET name = $1,
                  price = $2,
                  stock = stock + $3
              WHERE id = $4
@@ -38,7 +38,7 @@ export async function AddStock(req, res) {
           productId = updated.rows[0].id;
         } else {
           const inserted = await client.query(
-            `INSERT INTO products (item_name, price, user_id, stock, org_id)
+            `INSERT INTO products (name, price, user_id, stock, org_id)
              VALUES ($1, $2, $3, $4, $5)
              RETURNING id`,
             [itemName, sellingPrice, userId, quantity, orgId]
@@ -48,7 +48,7 @@ export async function AddStock(req, res) {
         }
       } else {
         const inserted = await client.query(
-          `INSERT INTO products (item_name, price, user_id, stock, org_id)
+          `INSERT INTO products (name, price, user_id, stock, org_id)
            VALUES ($1, $2, $3, $4, $5)
            RETURNING id`,
           [itemName, sellingPrice, userId, quantity, orgId]
@@ -168,16 +168,16 @@ export async function CreateOrder(req, res) {
 
     // ✅ 1. Insert into orders
     const orderResult = await client.query(
-      `INSERT INTO orders 
+      `INSERT INTO orders
       (customer_name, customer_contact, total_amount, paid, remaining, payment_method, org_id, user_id)
       VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
       RETURNING id`,
       [
         customerName,
         customerContact,
-        totalAmount,
-        paid,
-        remaining,
+        Number(totalAmount),
+        Number(paid),
+        Number(remaining),
         paymentMethod,
         orgId,
         userId,
@@ -239,8 +239,6 @@ export async function CreateOrder(req, res) {
 
 export async function GetAllTransactions(req, res) {
   const orgId = req.headers["org-id"];
-
-  console.log(req.headers);
 
   if (!orgId) {
     return res.status(400).json({

@@ -15,7 +15,6 @@ import {
 } from "../controller/buisness/buisness.js";
 
 router.get("/stock", (req, res) => {
-  console.log("get request for stock");
   return res.json({
     message: "stock data rescieved",
     status: true,

@@ -17,7 +17,7 @@ export async function RegisterUser(req, res) {
     const query = `
         INSERT INTO users (name, contact, password)
         VALUES ($1, $2, $3)
-        RETURNING id, name, contact;
+        RETURNING id, name, contact , org_count;
       `;
 
     const result = await pool.query(query, [name, contact, hashedPassword]);
@@ -73,7 +73,7 @@ export async function LoginUser(req, res) {
         id: user.id,
         name: user.name,
         contact: user.contact,
-        org: user.org_count,
+        org_count: user.org_count,
       },
     });
   } catch (err) {
