@@ -25,6 +25,12 @@ router.get("/stock", (req, res) => {
   });
 });
 
+router.get("/wakie-wakie", (req, res) => {
+  res.status(200).json({
+    message: "all good",
+  });
+});
+
 router.get("/get-org-data", AllOrganizations);
 router.get("/orders", GetAllTransactions);
 

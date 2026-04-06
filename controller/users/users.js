@@ -11,23 +11,36 @@ export async function RegisterUser(req, res) {
   }
 
   const { name, contact, password } = body;
-  const hashedPassword = await bcrypt.hash(password, 10);
+
+  if (!name || !contact || !password) {
+    return res.status(400).json({
+      message: "All fields are required",
+    });
+  }
 
   try {
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     const query = `
-        INSERT INTO users (name, contact, password)
-        VALUES ($1, $2, $3)
-        RETURNING id, name, contact , org_count;
-      `;
+      INSERT INTO users (name, contact, password)
+      VALUES ($1, $2, $3)
+      RETURNING id, name, contact, org_count;
+    `;
 
     const result = await pool.query(query, [name, contact, hashedPassword]);
 
-    return res.status(200).json({
+    return res.status(201).json({
       message: "User created",
       user: result.rows[0],
     });
   } catch (err) {
     console.error("Error saving user ❌", err);
+
+    if (err.code === "23505") {
+      return res.status(409).json({
+        message: "User already exists with this contact",
+      });
+    }
 
     return res.status(500).json({
       message: "Something went wrong",
